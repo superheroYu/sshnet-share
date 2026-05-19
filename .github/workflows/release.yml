@@ -64,6 +64,7 @@ jobs:
           if (-not $env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD) {
             throw "TAURI_SIGNING_PRIVATE_KEY_PASSWORD is not configured."
           }
+          exit 0
 
       - name: Install Playwright browser
         run: npx playwright install chromium
