@@ -65,6 +65,7 @@ const TRAY_START: &str = "start";
 const TRAY_STOP: &str = "stop";
 const TRAY_LOGS: &str = "logs";
 const TRAY_QUIT: &str = "quit";
+const TRAY_ICON_ID: &str = "main";
 const TRAY_SHOW_LOGS_EVENT: &str = "tray-show-logs";
 const STATUS_CHANGED_EVENT: &str = "sshnet-status-changed";
 const LOG_ENTRY_EVENT: &str = "sshnet-log-entry";
@@ -639,6 +640,7 @@ pub fn run() {
             record_app_event,
             get_startup_preferences,
             set_startup_preferences,
+            set_tray_language,
             export_diagnostic_bundle,
             has_saved_ssh_password,
             forget_saved_ssh_password,

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.1 - 2026-05-20
+
+- Fixed the system tray right-click menu so it follows the selected interface language.
+
 ## 0.1.0 - 2026-05-19
 
 - First public Windows test release candidate for SSHNet Share.

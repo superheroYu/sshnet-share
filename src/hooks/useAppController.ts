@@ -164,6 +164,15 @@ export function useAppController() {
   }, [text]);
 
   useEffect(() => {
+    void invoke("set_tray_language", { language: appSettings.language }).catch((error) =>
+      appendLog(
+        "WARN",
+        textRef.current.messages.updateTrayLanguageFailed(displayError(error, textRef.current)),
+      ),
+    );
+  }, [appSettings.language]);
+
+  useEffect(() => {
     let unlisten: (() => void) | undefined;
     let disposed = false;
 

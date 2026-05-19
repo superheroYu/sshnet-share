@@ -44,6 +44,91 @@ pub(super) fn concise_tray_error(error: &str) -> String {
     }
 }
 
+#[derive(Clone, Copy)]
+enum TrayLanguage {
+    ZhCn,
+    EnUs,
+}
+
+impl TrayLanguage {
+    fn from_code(language: &str) -> Result<Self, String> {
+        match language {
+            "zh-CN" => Ok(Self::ZhCn),
+            "en-US" => Ok(Self::EnUs),
+            _ => Err(format!("Unsupported tray language: {language}")),
+        }
+    }
+
+    fn open_label(self) -> &'static str {
+        match self {
+            Self::ZhCn => "\u{6253}\u{5f00}\u{4e3b}\u{7a97}\u{53e3}",
+            Self::EnUs => "Open Main Window",
+        }
+    }
+
+    fn start_label(self) -> &'static str {
+        match self {
+            Self::ZhCn => "\u{542f}\u{52a8}\u{5168}\u{90e8}\u{914d}\u{7f6e}",
+            Self::EnUs => "Start All Profiles",
+        }
+    }
+
+    fn stop_label(self) -> &'static str {
+        match self {
+            Self::ZhCn => "\u{505c}\u{6b62}\u{5168}\u{90e8}\u{96a7}\u{9053}",
+            Self::EnUs => "Stop All Tunnels",
+        }
+    }
+
+    fn logs_label(self) -> &'static str {
+        match self {
+            Self::ZhCn => "\u{67e5}\u{770b}\u{65e5}\u{5fd7}",
+            Self::EnUs => "View Logs",
+        }
+    }
+
+    fn quit_label(self) -> &'static str {
+        match self {
+            Self::ZhCn => "\u{9000}\u{51fa}",
+            Self::EnUs => "Quit",
+        }
+    }
+}
+
+fn build_tray_menu<R: tauri::Runtime, M: Manager<R>>(
+    app: &M,
+    language: TrayLanguage,
+) -> tauri::Result<Menu<R>> {
+    let open_item = MenuItem::with_id(app, TRAY_OPEN, language.open_label(), true, None::<&str>)?;
+    let start_item =
+        MenuItem::with_id(app, TRAY_START, language.start_label(), true, None::<&str>)?;
+    let stop_item = MenuItem::with_id(app, TRAY_STOP, language.stop_label(), true, None::<&str>)?;
+    let logs_item = MenuItem::with_id(app, TRAY_LOGS, language.logs_label(), true, None::<&str>)?;
+    let quit_item = MenuItem::with_id(app, TRAY_QUIT, language.quit_label(), true, None::<&str>)?;
+    let separator = PredefinedMenuItem::separator(app)?;
+    Menu::with_items(
+        app,
+        &[
+            &open_item,
+            &start_item,
+            &stop_item,
+            &logs_item,
+            &separator,
+            &quit_item,
+        ],
+    )
+}
+
+#[tauri::command]
+pub(super) fn set_tray_language(app: AppHandle, language: String) -> Result<(), String> {
+    let language = TrayLanguage::from_code(&language)?;
+    let menu = build_tray_menu(&app, language).map_err(|error| error.to_string())?;
+    let tray = app
+        .tray_by_id(TRAY_ICON_ID)
+        .ok_or_else(|| "Tray icon is not available.".to_string())?;
+    tray.set_menu(Some(menu)).map_err(|error| error.to_string())
+}
+
 pub(super) struct TrayTaskGuard {
     app: AppHandle,
 }
@@ -257,25 +342,9 @@ pub(super) fn stop_tunnels_from_tray(app: &AppHandle) {
 }
 
 pub(super) fn setup_tray(app: &mut tauri::App) -> tauri::Result<()> {
-    let open_item = MenuItem::with_id(app, TRAY_OPEN, "打开主窗口", true, None::<&str>)?;
-    let start_item = MenuItem::with_id(app, TRAY_START, "启动全部配置", true, None::<&str>)?;
-    let stop_item = MenuItem::with_id(app, TRAY_STOP, "停止全部隧道", true, None::<&str>)?;
-    let logs_item = MenuItem::with_id(app, TRAY_LOGS, "查看日志", true, None::<&str>)?;
-    let quit_item = MenuItem::with_id(app, TRAY_QUIT, "退出", true, None::<&str>)?;
-    let separator = PredefinedMenuItem::separator(app)?;
-    let menu = Menu::with_items(
-        app,
-        &[
-            &open_item,
-            &start_item,
-            &stop_item,
-            &logs_item,
-            &separator,
-            &quit_item,
-        ],
-    )?;
+    let menu = build_tray_menu(app, TrayLanguage::ZhCn)?;
 
-    let mut tray = TrayIconBuilder::new()
+    let mut tray = TrayIconBuilder::with_id(TRAY_ICON_ID)
         .tooltip("SSHNet Share")
         .menu(&menu)
         .show_menu_on_left_click(false)

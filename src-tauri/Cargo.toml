@@ -1,6 +1,6 @@
 [package]
 name = "sshnet-share"
-version = "0.1.0"
+version = "0.1.1"
 description = "Bring local proxy endpoints to SSH servers with secure reverse tunnels"
 authors = ["SSHNet Share Contributors"]
 edition = "2021"
