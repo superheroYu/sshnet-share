@@ -39,17 +39,30 @@ jobs:
         shell: pwsh
         env:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         run: |
           $placeholder = "OWNER" + "/REPO"
-          git grep -n $placeholder
-          if ($LASTEXITCODE -eq 0) {
+          $previousNativeErrorPreference = $PSNativeCommandUseErrorActionPreference
+          $PSNativeCommandUseErrorActionPreference = $false
+          try {
+            $grepOutput = & git grep -n -- $placeholder 2>&1
+            $grepExit = $LASTEXITCODE
+          } finally {
+            $PSNativeCommandUseErrorActionPreference = $previousNativeErrorPreference
+          }
+          if ($grepExit -eq 0) {
+            $grepOutput
             throw "Release repository placeholder is still present."
           }
-          if ($LASTEXITCODE -ne 1) {
-            exit $LASTEXITCODE
+          if ($grepExit -ne 1) {
+            $grepOutput
+            exit $grepExit
           }
           if (-not $env:TAURI_SIGNING_PRIVATE_KEY) {
             throw "TAURI_SIGNING_PRIVATE_KEY is not configured."
+          }
+          if (-not $env:TAURI_SIGNING_PRIVATE_KEY_PASSWORD) {
+            throw "TAURI_SIGNING_PRIVATE_KEY_PASSWORD is not configured."
           }
 
       - name: Install Playwright browser
@@ -85,7 +98,7 @@ jobs:
 
             The app does not automatically upload telemetry, logs, crash reports, or diagnostics. Diagnostic ZIP files are exported locally and must be submitted manually by the user.
           releaseDraft: true
-          prerelease: false
+          prerelease: ${{ contains(github.ref_name, '-rc.') }}
           args: --ci --bundles nsis
           includeUpdaterJson: true
           updaterJsonPreferNsis: true
