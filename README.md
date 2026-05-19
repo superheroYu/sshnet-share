@@ -1,17 +1,22 @@
 <div align="center">
 
+<img src="assets/logo.png" alt="SSHNet Share" width="120" height="120" />
+
 # SSHNet Share
 
 **A Windows desktop client that brings local proxy endpoints to remote SSH servers via managed reverse tunnels.**
 
 [![License: PolyForm NC 1.0.0](https://img.shields.io/badge/license-PolyForm%20NC%201.0.0-blue.svg)](LICENSE)
-[![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6.svg)](#platform-support)
-[![Release: v0.1.1](https://img.shields.io/badge/release-v0.1.1-brightgreen.svg)](https://github.com/superheroYu/sshnet-share/releases/latest)
-[![Tauri 2](https://img.shields.io/badge/Tauri-2-FFC131.svg)](https://tauri.app)
-[![React 19](https://img.shields.io/badge/React-19-61DAFB.svg)](https://react.dev)
-[![Rust 2021](https://img.shields.io/badge/Rust-2021-DEA584.svg)](https://www.rust-lang.org)
+[![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6.svg?logo=windows&logoColor=white)](#platform-support)
+[![Release: v0.1.1](https://img.shields.io/badge/release-v0.1.1-brightgreen.svg?logo=github&logoColor=white)](https://github.com/superheroYu/sshnet-share/releases/latest)
+
+[![Tauri 2](https://img.shields.io/badge/Tauri-2-FFC131.svg?logo=tauri&logoColor=white)](https://tauri.app)
+[![React 19](https://img.shields.io/badge/React-19-61DAFB.svg?logo=react&logoColor=white)](https://react.dev)
+[![Rust 2021](https://img.shields.io/badge/Rust-2021-DEA584.svg?logo=rust&logoColor=white)](https://www.rust-lang.org)
 
 **English** · [简体中文](README.zh-CN.md)
+
+<sub><a href="https://github.com/superheroYu/sshnet-share/releases/latest"><b>Download</b></a> · <a href="#screenshots">Screenshots</a> · <a href="#features">Features</a> · <a href="#architecture-overview">Architecture</a> · <a href="#development">Development</a> · <a href="#documentation">Docs</a></sub>
 
 </div>
 
@@ -22,7 +27,7 @@ SSHNet Share is a Windows desktop client that brings one or more local proxy end
 <table>
   <tr>
     <td width="170"><b>Latest release</b></td>
-    <td><code>v0.1.1</code></td>
+    <td><code>v0.1.1</code> &mdash; <a href="https://github.com/superheroYu/sshnet-share/releases/latest">Windows installer on Releases</a></td>
   </tr>
   <tr>
     <td><b>Repository</b></td>
@@ -33,6 +38,13 @@ SSHNet Share is a Windows desktop client that brings one or more local proxy end
     <td>Source-available under <a href="LICENSE">PolyForm Noncommercial License 1.0.0</a>. Noncommercial use is allowed; commercial use requires separate authorization from superheroYu &mdash; <a href="https://github.com/superheroYu/sshnet-share/issues">open an issue</a> to discuss.</td>
   </tr>
 </table>
+
+## Highlights
+
+- **Multi-profile reverse tunnels** &mdash; route different local proxies through one or many SSH servers in parallel.
+- **Windows-native trust** &mdash; Windows OpenSSH, Credential Manager, and an app-owned `known_hosts` for host key handling.
+- **Productized observability** &mdash; filterable logs, runtime status, notification history, and redacted diagnostic export.
+- **Tray-first desktop UX** &mdash; light/dark themes, optional silent autostart, and signed Tauri updater wiring.
 
 ---
 
