@@ -1,0 +1,483 @@
+/* ============================================================
+   Settings page
+   ============================================================ */
+.settings-page {
+  display: grid;
+  align-content: start;
+  gap: var(--space-4);
+  min-height: 0;
+  overflow: auto;
+}
+
+.settings-section {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+  padding: var(--space-5);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-subtle);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ============================================================
+   Section header
+   ============================================================ */
+.settings-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.settings-section-header h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font: var(--weight-semibold) var(--text-lg) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.settings-section-header p {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.settings-section-header > span {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  padding: 2px var(--space-2);
+  color: var(--color-success);
+  border: 1px solid var(--color-success-border);
+  border-radius: var(--radius-full);
+  background: var(--color-success-soft);
+  font: var(--weight-medium) var(--text-xs) / 1.4 var(--font-sans);
+}
+
+/* ============================================================
+   Field grid (form layout)
+   ============================================================ */
+.settings-field-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-4);
+}
+
+.settings-field-grid label {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font: var(--weight-medium) var(--text-sm) / 1.4 var(--font-sans);
+}
+
+.wide-field {
+  grid-column: span 2;
+}
+
+@media (max-width: 720px) {
+  .wide-field {
+    grid-column: span 1;
+  }
+}
+
+.settings-preference-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--space-4);
+}
+
+/* ============================================================
+   Segmented control
+   ============================================================ */
+.segmented-control {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2);
+}
+
+.segmented-control.three {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.segmented-control button {
+  display: grid;
+  gap: var(--space-1);
+  min-height: 44px;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  cursor: pointer;
+  text-align: left;
+  font: var(--weight-medium) var(--text-base) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.segmented-control button span {
+  color: var(--color-text-tertiary);
+  font: var(--weight-regular) var(--text-xs) / 1.4 var(--font-sans);
+  letter-spacing: 0;
+}
+
+.segmented-control button:hover {
+  background: var(--color-bg-emphasis);
+  border-color: var(--color-border-strong);
+  box-shadow: none;
+}
+
+.segmented-control button.active {
+  color: var(--color-text-primary);
+  border-color: var(--color-accent-border);
+  background: var(--color-accent-soft);
+  box-shadow: inset 0 0 0 1px var(--color-accent-border);
+}
+
+.segmented-control button.active span {
+  color: var(--color-accent);
+}
+
+.segmented-control button:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+/* ============================================================
+   Toggle row — DEFAULT (wide panels, e.g. Settings page)
+   Title + description flow naturally on the left, switch on the right.
+   ============================================================ */
+.settings-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  transition: background var(--duration-fast) var(--ease-out);
+}
+
+.settings-action-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-5);
+  min-height: 64px;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+}
+
+.settings-action-row > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.settings-action-row strong,
+.settings-action-row span,
+.settings-action-row small {
+  display: block;
+}
+
+.settings-action-row strong {
+  color: var(--color-text-primary);
+  font: var(--weight-medium) var(--text-base) / 1.3 var(--font-sans);
+}
+
+.settings-action-row span,
+.settings-action-row small {
+  margin-top: 2px;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.settings-action-row small.update-available {
+  color: var(--color-accent);
+}
+
+.settings-inline-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.settings-inline-actions button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 34px;
+  padding: 0 var(--space-3);
+}
+
+@media (max-width: 760px) {
+  .settings-action-row {
+    display: grid;
+    gap: var(--space-3);
+  }
+
+  .settings-inline-actions {
+    flex-wrap: wrap;
+  }
+}
+
+.settings-toggle-row > div:first-child {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.settings-toggle-row > .switch-button {
+  flex: 0 0 auto;
+}
+
+.settings-toggle-row:hover {
+  background: var(--color-bg-emphasis);
+}
+
+.settings-toggle-row strong,
+.settings-toggle-row span {
+  display: block;
+}
+
+.settings-toggle-row strong {
+  color: var(--color-text-primary);
+  font: var(--weight-medium) var(--text-base) / 1.3 var(--font-sans);
+  letter-spacing: -0.005em;
+}
+
+.settings-toggle-row span {
+  margin-top: 2px;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.inline-action-button {
+  width: fit-content;
+  height: 32px;
+  min-height: 32px;
+}
+
+/* ============================================================
+   Toggle row — COMPACT (Settings page, narrow card variant)
+   Slightly less padding than default; still keeps card styling.
+   ============================================================ */
+.compact-toggle-row {
+  position: relative;
+  display: block;
+  min-height: 56px;
+  padding: var(--space-3) var(--space-4);
+}
+
+.compact-toggle-row > div:first-child {
+  display: block;
+  min-width: 0;
+}
+
+.compact-toggle-row > div:first-child > strong {
+  display: block;
+  padding-right: 96px;   /* reserve space for absolute switch */
+}
+
+.compact-toggle-row > div:first-child > span {
+  display: block;
+  margin-top: var(--space-1);
+  padding-right: 0;
+}
+
+.compact-toggle-row > .switch-button {
+  position: absolute;
+  top: 14px;
+  right: var(--space-4);
+}
+
+/* ============================================================
+   Toggle row — EDITOR variant
+   Two NESTED flex containers. No absolute positioning, no grid,
+   no template-areas. Just basic flex which is rock-solid since 2013.
+
+   DOM structure:
+     .editor-toggle-row             (flex column, gap 4px)
+     ├── .editor-toggle-head        (flex row, title + switch)
+     │   ├── <strong>title          (flex: 1, min-width: 0)
+     │   └── <button class="switch-button">  (flex: 0 0 auto)
+     └── <span>description          (block, full row width)
+
+   The outer flex-column GUARANTEES head and desc stack vertically and
+   that the row's height = head height + gap + desc height. Nothing
+   absolute = nothing can escape height calculation.
+   ============================================================ */
+.editor-toggle-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background: transparent;
+}
+
+.editor-toggle-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.editor-toggle-title {
+  flex: 1 1 auto;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-secondary);
+  font: var(--weight-medium) var(--text-sm) / 1.4 var(--font-sans);
+  letter-spacing: 0;
+}
+
+.editor-toggle-head > .switch-button {
+  flex: 0 0 auto;
+}
+
+.editor-toggle-desc {
+  display: block;
+  margin: 0;
+  padding: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   Switch — clean pill (track + thumb), optional label sits OUTSIDE
+   the pill instead of inside a chunky button.
+   ============================================================ */
+.switch-button {
+  display: inline-grid;
+  grid-template-columns: 32px auto;
+  align-items: center;
+  gap: var(--space-2);
+  height: 28px;
+  padding: 0;
+  color: var(--color-text-tertiary);
+  border: 0;
+  border-radius: var(--radius-full);
+  background: transparent;
+  cursor: pointer;
+  font: var(--weight-medium) var(--text-xs) / 1 var(--font-sans);
+  letter-spacing: 0.01em;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+/* When there is no em label, the switch is purely a track + thumb */
+.switch-button:not(:has(em)) {
+  grid-template-columns: 32px;
+}
+
+.switch-button:hover > span:first-child {
+  border-color: var(--color-border-strong);
+}
+
+.switch-button.active:hover > span:first-child {
+  background: var(--color-accent-hover);
+  border-color: var(--color-accent-hover);
+}
+
+.switch-button:focus-visible {
+  outline: 0;
+  border-radius: var(--radius-full);
+  box-shadow: var(--focus-ring);
+}
+
+/* The pill track (first <span> child) */
+.switch-button > span:first-child {
+  position: relative;
+  width: 32px;
+  height: 18px;
+  margin: 0;
+  border-radius: var(--radius-full);
+  background: var(--color-bg-emphasis);
+  border: 1px solid var(--color-border-default);
+  transition:
+    background var(--duration-base) var(--ease-out),
+    border-color var(--duration-base) var(--ease-out);
+}
+
+/* The thumb */
+.switch-button > span:first-child::after {
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.30),
+    0 0 0 0.5px rgba(0, 0, 0, 0.10);
+  content: "";
+  transition: transform var(--duration-base) var(--ease-out);
+}
+
+/* Optional label (em) — sits OUTSIDE the pill, not inside a chunky button */
+.switch-button em {
+  font: var(--weight-medium) var(--text-xs) / 1 var(--font-sans);
+  font-style: normal;
+  white-space: nowrap;
+  color: var(--color-text-tertiary);
+  letter-spacing: 0.02em;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+/* Active state: ONLY the track changes color (and label color shifts) —
+   no chunky button background, no border around the whole control */
+.switch-button.active {
+  color: var(--color-accent);
+  background: transparent;
+  border: 0;
+}
+
+.switch-button.active > span:first-child {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.switch-button.active > span:first-child::after {
+  transform: translateX(14px);
+}
+
+.switch-button.active em {
+  color: var(--color-accent);
+}
+
+.switch-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* ============================================================
+   Status text utilities (reused in inline messages)
+   ============================================================ */
+.ready {
+  color: var(--color-success);
+}
+
+.warning,
+.pending {
+  color: var(--color-warning);
+}
+
+.error {
+  color: var(--color-danger);
+}

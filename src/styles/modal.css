@@ -1,0 +1,175 @@
+/* ============================================================
+   Modal backdrop — full-screen frosted overlay
+   ============================================================ */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-modal);
+  display: grid;
+  place-items: center;
+  padding: var(--space-6);
+  background: rgba(4, 8, 11, 0.55);
+  backdrop-filter: blur(12px) saturate(120%);
+  -webkit-backdrop-filter: blur(12px) saturate(120%);
+  animation: modal-backdrop-in var(--duration-base) var(--ease-out);
+}
+
+@keyframes modal-backdrop-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ============================================================
+   Password dialog
+   ============================================================ */
+.password-dialog {
+  display: grid;
+  gap: var(--space-4);
+  width: min(440px, 100%);
+  padding: var(--space-5);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-xl);
+  background: var(--color-bg-subtle);
+  box-shadow: var(--shadow-xl);
+  animation: modal-in var(--duration-base) var(--ease-out);
+}
+
+@keyframes modal-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.password-dialog h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font: var(--weight-semibold) var(--text-xl) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+}
+
+.password-dialog p {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.55;
+}
+
+.password-dialog label {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font: var(--weight-medium) var(--text-sm) / 1.4 var(--font-sans);
+}
+
+/* ============================================================
+   Dialog actions footer
+   ============================================================ */
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-2);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border-subtle);
+  margin-top: var(--space-2);
+}
+
+.dialog-actions button {
+  height: 36px;
+  padding: 0 var(--space-4);
+}
+
+.dialog-actions .danger-button {
+  color: var(--color-danger);
+  border-color: var(--color-danger-border);
+  background: var(--color-danger-soft);
+}
+
+.dialog-actions .danger-button:not(:disabled):hover {
+  color: var(--color-danger);
+  border-color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger-soft) 72%, var(--color-danger) 28%);
+}
+
+.dialog-actions .danger-button:not(:disabled):active {
+  transform: translateY(0.5px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.18);
+}
+
+/* ============================================================
+   Host key replace dialog — side-by-side fingerprint diff
+   ============================================================ */
+.host-key-replace-dialog {
+  width: min(620px, 100%);
+}
+
+.host-key-replace-warning {
+  color: var(--color-danger);
+}
+
+.host-key-diff {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+}
+
+.host-key-diff-column {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-canvas);
+}
+
+.host-key-diff-column.trusted {
+  border-color: var(--color-border-subtle);
+}
+
+.host-key-diff-column.scanned {
+  border-color: var(--color-danger-border);
+  background: var(--color-danger-soft);
+}
+
+.host-key-diff-column h3 {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font: var(--weight-semibold) var(--text-xs) / 1.2 var(--font-sans);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.host-key-diff-column ul {
+  display: grid;
+  gap: var(--space-1);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.host-key-diff-column li {
+  margin: 0;
+}
+
+.host-key-diff-column code {
+  display: block;
+  padding: var(--space-1) var(--space-2);
+  color: var(--color-text-primary);
+  font: var(--text-xs) / 1.4 var(--font-mono);
+  word-break: break-all;
+  background: var(--color-bg-subtle);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+}
+
+.host-key-diff-empty {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font: var(--text-sm) / 1.4 var(--font-sans);
+  font-style: italic;
+}
+
+@media (max-width: 560px) {
+  .host-key-diff {
+    grid-template-columns: 1fr;
+  }
+}

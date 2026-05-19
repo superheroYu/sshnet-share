@@ -1,0 +1,109 @@
+/* ============================================================
+   Light theme — token overrides only.
+   All components automatically inherit thanks to the token system
+   defined in base.css. No per-selector overrides needed.
+   ============================================================ */
+.theme-light {
+  color-scheme: light;
+
+  /* —— Surfaces —— */
+  --color-bg-canvas:      #f4f6f9;
+  --color-bg-subtle:      #ffffff;
+  --color-bg-muted:       #f1f4f8;
+  --color-bg-emphasis:    #e7ecf2;
+  --color-bg-elevated:    #ffffff;
+
+  /* —— Borders —— */
+  --color-border-subtle:  rgba(15, 23, 42, 0.06);
+  --color-border-default: rgba(15, 23, 42, 0.10);
+  --color-border-strong:  rgba(15, 23, 42, 0.18);
+
+  /* —— Text —— */
+  --color-text-primary:   #0f172a;
+  --color-text-secondary: #475569;
+  --color-text-tertiary:  #94a3b8;
+  --color-text-disabled:  #cbd5e1;
+
+  /* —— Accent (darker cyan for AA contrast on light bg) —— */
+  --color-accent:         #0891b2;
+  --color-accent-hover:   #06b6d4;
+  --color-accent-active:  #0e7490;
+  --color-accent-soft:    rgba(8, 145, 178, 0.10);
+  --color-accent-border:  rgba(8, 145, 178, 0.30);
+  --color-accent-on:      #ffffff;
+
+  /* —— Semantic —— */
+  --color-success:        #047857;
+  --color-success-soft:   rgba(4, 120, 87, 0.10);
+  --color-success-border: rgba(4, 120, 87, 0.30);
+  --color-warning:        #b45309;
+  --color-warning-soft:   rgba(180, 83, 9, 0.10);
+  --color-warning-border: rgba(180, 83, 9, 0.30);
+  --color-danger:         #b91c1c;
+  --color-danger-soft:    rgba(185, 28, 28, 0.08);
+  --color-danger-border:  rgba(185, 28, 28, 0.30);
+  --color-info:           #4338ca;
+  --color-info-soft:      rgba(67, 56, 202, 0.10);
+
+  /* —— Focus ring —— */
+  --focus-ring:           0 0 0 3px rgba(8, 145, 178, 0.30);
+  --focus-ring-danger:    0 0 0 3px rgba(185, 28, 28, 0.25);
+
+  /* —— Shadows (cool tinted, not pure black) —— */
+  --shadow-xs: 0 1px 2px rgba(15, 23, 42, 0.04);
+  --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.06), 0 2px 4px rgba(15, 23, 42, 0.04);
+  --shadow-md: 0 2px 4px rgba(15, 23, 42, 0.08), 0 4px 8px rgba(15, 23, 42, 0.06);
+  --shadow-lg: 0 4px 8px rgba(15, 23, 42, 0.10), 0 8px 16px rgba(15, 23, 42, 0.08);
+  --shadow-xl: 0 8px 16px rgba(15, 23, 42, 0.12), 0 16px 32px rgba(15, 23, 42, 0.10);
+
+  background: var(--color-bg-canvas);
+  color: var(--color-text-primary);
+}
+
+/* —— App frame background adjustment for light theme —— */
+.app-frame.theme-light {
+  background:
+    radial-gradient(circle at 15% -10%, rgba(8, 145, 178, 0.05), transparent 40%),
+    linear-gradient(180deg, #fafbfd 0%, var(--color-bg-canvas) 100%);
+}
+
+/* —— Titlebar & statusbar: slightly different glass tint on light —— */
+.theme-light .titlebar,
+.theme-light .statusbar {
+  background: rgba(255, 255, 255, 0.72);
+}
+
+/* —— Accent button keeps darker gradient on light bg —— */
+.theme-light .accent-button,
+.theme-light .editor-actions .save-button {
+  color: #ffffff;
+  border-color: var(--color-accent-border);
+  background: linear-gradient(180deg, #06b6d4 0%, #0891b2 100%);
+}
+
+.theme-light .accent-button:not(:disabled):hover,
+.theme-light .editor-actions .save-button:not(:disabled):hover {
+  background: linear-gradient(180deg, #22d3ee 0%, #06b6d4 100%);
+}
+
+.theme-light .accent-button:not(:disabled):active,
+.theme-light .editor-actions .save-button:not(:disabled):active {
+  background: linear-gradient(180deg, #0891b2 0%, #0e7490 100%);
+}
+
+/* —— SSH preview <pre> needs lighter terminal background —— */
+.theme-light .preview-block pre {
+  color: #0e7490;
+  background: #f1f5f9;
+}
+
+/* —— Level filter active button — accent uses white text on light bg —— */
+.theme-light .level-filter button.active {
+  color: var(--color-accent-on);
+}
+
+/* —— Check cell checkmark color on light theme —— */
+.theme-light .check-cell.checked::after {
+  border-right-color: #ffffff;
+  border-bottom-color: #ffffff;
+}

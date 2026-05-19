@@ -1,0 +1,485 @@
+/* ============================================================
+   Editor panel container
+   ============================================================ */
+.editor-panel {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  min-width: 0;
+  overflow: hidden;
+  border-left: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+}
+
+.editor-closed .editor-panel {
+  display: none;
+}
+
+/* ============================================================
+   Editor header (title + close button)
+   ============================================================ */
+.editor-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  min-height: 64px;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.editor-header h2 {
+  margin: 0;
+  font: var(--weight-semibold) var(--text-xl) / 1.3 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+.editor-header span {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-sm);
+  line-height: 1.4;
+}
+
+/* close button — inherits ghost styling from controls.css */
+
+/* ============================================================
+   Editor tabs
+   ============================================================ */
+.editor-tabs {
+  display: flex;
+  gap: var(--space-6);
+  height: 40px;
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.editor-tabs button {
+  position: relative;
+  height: 100%;
+  padding: 0;
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font: var(--weight-medium) var(--text-base) / 1 var(--font-sans);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.editor-tabs button:hover {
+  color: var(--color-text-primary);
+  background: transparent;
+}
+
+.editor-tabs button.active {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.editor-tabs button.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-accent);
+}
+
+.editor-tabs button:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   Editor scroll area + form fields
+   ============================================================ */
+.editor-scroll {
+  display: grid;
+  gap: var(--space-4);
+  min-height: 0;
+  padding: var(--space-5);
+  overflow: auto;
+}
+
+.editor-scroll label,
+.field-stack,
+.field-group {
+  display: grid;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+  font: var(--weight-medium) var(--text-sm) / 1.4 var(--font-sans);
+}
+
+.field-label {
+  color: inherit;
+}
+
+.form-error {
+  margin: 0;
+  padding: var(--space-3) var(--space-3);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger-border);
+  border-radius: var(--radius-md);
+  background: var(--color-danger-soft);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.split-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+}
+
+@media (max-width: 720px) {
+  .split-fields {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ============================================================
+   Host + Port combo
+   ============================================================ */
+.host-combo {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(168px, 0.58fr);
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.host-combo:hover {
+  border-color: var(--color-border-strong);
+}
+
+.host-combo:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: var(--focus-ring);
+  background: var(--color-bg-muted);
+}
+
+.host-combo input,
+.host-combo select {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  padding: 0 var(--space-3);
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.host-combo input:focus,
+.host-combo select:focus {
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.host-combo select {
+  border-left: 1px solid var(--color-border-subtle);
+}
+
+/* ============================================================
+   Path picker combo
+   ============================================================ */
+.path-picker {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  height: 32px;
+  overflow: hidden;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.path-picker:hover {
+  border-color: var(--color-border-strong);
+}
+
+.path-picker:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: var(--focus-ring);
+  background: var(--color-bg-muted);
+}
+
+.path-picker input,
+.path-picker button {
+  height: 100%;
+  min-height: 0;
+  border: 0;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.path-picker input {
+  width: 100%;
+  padding: 0 var(--space-3);
+}
+
+.path-picker input:focus {
+  outline: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+.path-picker button {
+  padding: 0 var(--space-3);
+  color: var(--color-text-primary);
+  border-left: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+}
+
+.path-picker button:hover {
+  color: var(--color-accent-strong);
+  background: var(--color-bg-muted);
+}
+
+.path-picker button:active {
+  transform: translateY(0.5px);
+}
+
+/* ============================================================
+   Proxy tools button row
+   ============================================================ */
+.proxy-tools {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* proxy-tools button styling inherited from controls.css */
+
+/* ============================================================
+   Inline status banner
+   ============================================================ */
+.inline-status {
+  margin: 0;
+  padding: var(--space-3) var(--space-3);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+.inline-status.ready {
+  color: var(--color-success);
+  border-color: var(--color-success-border);
+  background: var(--color-success-soft);
+}
+
+/* ============================================================
+   Candidate list (proxy/host suggestions)
+   ============================================================ */
+.candidate-list {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.candidate-list button {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 2px var(--space-3);
+  height: auto;
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  cursor: pointer;
+  text-align: left;
+  font: var(--weight-regular) var(--text-base) / 1.4 var(--font-sans);
+  letter-spacing: -0.005em;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out);
+}
+
+.candidate-list button:hover {
+  background: var(--color-bg-emphasis);
+  border-color: var(--color-accent-border);
+}
+
+.candidate-list button:active {
+  transform: translateY(0.5px);
+}
+
+.candidate-list button:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.candidate-list small {
+  grid-column: 1 / -1;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+}
+
+/* ============================================================
+   Host card (SSH host key trust state)
+   ============================================================ */
+.host-card {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-muted);
+  transition:
+    border-color var(--duration-base) var(--ease-out),
+    background var(--duration-base) var(--ease-out);
+}
+
+.host-card.trusted {
+  border-color: var(--color-success-border);
+  background: linear-gradient(180deg,
+    rgba(16, 185, 129, 0.06) 0%,
+    rgba(16, 185, 129, 0.02) 100%);
+}
+
+.host-card.error {
+  border-color: var(--color-danger-border);
+  background: linear-gradient(180deg,
+    rgba(239, 68, 68, 0.06) 0%,
+    rgba(239, 68, 68, 0.02) 100%);
+}
+
+.host-card > div:first-child {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font: var(--weight-semibold) var(--text-base) / 1.3 var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+.host-card.trusted > div:first-child {
+  color: var(--color-success);
+}
+
+.host-card.error > div:first-child {
+  color: var(--color-danger);
+}
+
+.host-card p {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   Fingerprints block
+   ============================================================ */
+.fingerprints {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.fingerprints small {
+  color: var(--color-text-tertiary);
+  font: var(--weight-semibold) var(--text-xs) / 1 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.fingerprints code {
+  padding: var(--space-2) var(--space-3);
+  overflow-wrap: anywhere;
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-canvas);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   SSH command preview
+   ============================================================ */
+.preview-block {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.preview-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.preview-header span {
+  color: var(--color-text-tertiary);
+  font: var(--weight-semibold) var(--text-xs) / 1 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.preview-header button {
+  height: 28px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border-color: transparent;
+}
+
+.preview-header button:hover {
+  background: var(--color-bg-emphasis);
+  color: var(--color-text-primary);
+  border-color: transparent;
+}
+
+.preview-header button.copy-done,
+.preview-header button.copy-done:hover {
+  color: var(--color-success);
+  background: var(--color-success-soft);
+  border-color: var(--color-success-border);
+}
+
+.preview-block pre {
+  margin: 0;
+  max-height: 160px;
+  padding: var(--space-3) var(--space-4);
+  overflow: auto;
+  color: #67e8f9;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  background: #07090c;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  letter-spacing: -0.005em;
+}
+
+/* ============================================================
+   Editor footer (save/cancel buttons)
+   ============================================================ */
+.editor-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5);
+  border-top: 1px solid var(--color-border-subtle);
+  background: var(--color-bg-subtle);
+}

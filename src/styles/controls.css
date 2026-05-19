@@ -1,0 +1,220 @@
+/* ============================================================
+   Generic button base — applies to all toolbar/editor/log buttons
+   ============================================================ */
+.accent-button,
+.toolbar-button,
+.editor-actions button,
+.proxy-tools button,
+.log-dock-toolbar button,
+.log-page-toolbar button,
+.preview-header button,
+.editor-header button,
+.window-tools button,
+.square-button,
+.dialog-actions button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  height: 32px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-muted);
+  font: var(--weight-medium) var(--text-base) / 1 var(--font-sans);
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.accent-button:not(:disabled):hover,
+.toolbar-button:not(:disabled):hover,
+.editor-actions button:not(:disabled):hover,
+.proxy-tools button:not(:disabled):hover,
+.log-dock-toolbar button:not(:disabled):hover,
+.log-page-toolbar button:not(:disabled):hover,
+.preview-header button:not(:disabled):hover,
+.editor-header button:not(:disabled):hover,
+.window-tools button:not(:disabled):hover,
+.square-button:not(:disabled):hover {
+  background: var(--color-bg-emphasis);
+  border-color: var(--color-border-strong);
+  color: var(--color-text-primary);
+}
+
+.accent-button:not(:disabled):active,
+.toolbar-button:not(:disabled):active,
+.editor-actions button:not(:disabled):active,
+.proxy-tools button:not(:disabled):active,
+.log-dock-toolbar button:not(:disabled):active,
+.log-page-toolbar button:not(:disabled):active,
+.preview-header button:not(:disabled):active,
+.editor-header button:not(:disabled):active,
+.window-tools button:not(:disabled):active,
+.square-button:not(:disabled):active {
+  background: var(--color-bg-muted);
+  transform: translateY(0.5px);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.16);
+}
+
+.accent-button:focus-visible,
+.toolbar-button:focus-visible,
+.editor-actions button:focus-visible,
+.proxy-tools button:focus-visible,
+.log-dock-toolbar button:focus-visible,
+.log-page-toolbar button:focus-visible,
+.preview-header button:focus-visible,
+.editor-header button:focus-visible,
+.window-tools button:focus-visible,
+.square-button:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.accent-button:disabled,
+.toolbar-button:disabled,
+.editor-actions button:disabled,
+.proxy-tools button:disabled,
+.log-dock-toolbar button:disabled,
+.log-page-toolbar button:disabled,
+.preview-header button:disabled,
+.dialog-actions button:disabled {
+  color: var(--color-text-disabled);
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border-subtle);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* —— Ghost (transparent until hover) — editor close button, etc. —— */
+.editor-header button {
+  background: transparent;
+  border-color: transparent;
+}
+
+.editor-header button:not(:disabled):hover {
+  background: var(--color-bg-muted);
+  border-color: transparent;
+}
+
+/* —— Window tools (titlebar minimize/close icons) —— */
+.window-tools button,
+.square-button {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-text-secondary);
+}
+
+.window-tools button:not(:disabled):hover,
+.square-button:not(:disabled):hover {
+  color: var(--color-text-primary);
+  background: var(--color-bg-muted);
+  border-color: transparent;
+}
+
+/* ============================================================
+   Primary CTA — accent-button & editor save
+   ============================================================ */
+.accent-button,
+.editor-actions .save-button {
+  color: var(--color-accent-on);
+  border-color: var(--color-accent-border);
+  background: linear-gradient(180deg, #2fd4dc 0%, #1ebdcb 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.20),
+    var(--shadow-xs);
+}
+
+.accent-button:not(:disabled):hover,
+.editor-actions .save-button:not(:disabled):hover {
+  color: var(--color-accent-on);
+  background: linear-gradient(180deg, #4ee0e8 0%, #2bc8d6 100%);
+  border-color: var(--color-accent-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.24),
+    var(--shadow-sm);
+}
+
+.accent-button:not(:disabled):active,
+.editor-actions .save-button:not(:disabled):active {
+  background: linear-gradient(180deg, #1ebdcb 0%, #1aa6b3 100%);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.20);
+  transform: translateY(0.5px);
+}
+
+.accent-button:disabled,
+.editor-actions .save-button:disabled {
+  color: var(--color-text-disabled);
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border-subtle);
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* ============================================================
+   Search box (titlebar / toolbar input wrapper)
+   ============================================================ */
+.search-box {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: 280px;
+  height: 32px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-tertiary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-subtle);
+  transition:
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.search-box:hover {
+  border-color: var(--color-border-strong);
+}
+
+.search-box:focus-within {
+  border-color: var(--color-accent);
+  box-shadow: var(--focus-ring);
+  background: var(--color-bg-muted);
+}
+
+.search-box input {
+  width: 100%;
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  color: var(--color-text-primary);
+  border: 0;
+  outline: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.search-box input:focus {
+  border: 0;
+  box-shadow: none;
+  background: transparent;
+}
+
+/* ============================================================
+   Dialog (modal) action buttons inherit base; cancel uses muted
+   ============================================================ */
+.dialog-actions button {
+  height: 36px;
+  padding: 0 var(--space-4);
+}

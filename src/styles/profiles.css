@@ -1,0 +1,447 @@
+/* ============================================================
+   Profile table container
+   ============================================================ */
+.config-table {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-subtle);
+  box-shadow: var(--shadow-xs);
+}
+
+/* ============================================================
+   Shared grid template for head & rows
+   ============================================================ */
+.table-head,
+.table-row {
+  display: grid;
+  grid-template-columns:
+    42px minmax(180px, 1.3fr) 140px 90px minmax(170px, 1.1fr)
+    94px 82px 118px 48px;
+  align-items: center;
+  min-width: 900px;
+}
+
+.config-table.connections-table .table-head,
+.config-table.connections-table .table-row {
+  grid-template-columns:
+    minmax(180px, 1.3fr) 140px 90px minmax(170px, 1.1fr)
+    94px 82px 118px 48px;
+  min-width: 858px;
+}
+
+@media (max-width: 1180px) {
+  .config-table.connections-table .table-head,
+  .config-table.connections-table .table-row {
+    grid-template-columns:
+      minmax(160px, 1.2fr) 128px 78px minmax(140px, 1fr)
+      78px 70px 104px 40px;
+    min-width: 760px;
+  }
+
+  .config-table.connections-table .table-row > span,
+  .config-table.connections-table .table-row > div,
+  .config-table.connections-table .table-head span {
+    padding: 0 var(--space-2);
+  }
+}
+
+/* ============================================================
+   Table head — minimal, no column dividers
+   ============================================================ */
+.table-head {
+  height: 40px;
+  color: var(--color-text-tertiary);
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: transparent;
+  font: var(--weight-semibold) var(--text-xs) / 1 var(--font-sans);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.table-head span {
+  padding: 0 var(--space-3);
+  /* removed border-left — no more column dividers */
+}
+
+/* ============================================================
+   Table body
+   ============================================================ */
+.table-body {
+  display: grid;
+  grid-auto-rows: minmax(52px, max-content);
+  align-content: start;
+  min-height: 0;
+  overflow: auto;
+}
+
+.table-row {
+  position: relative;
+  height: 52px;
+  min-height: 52px;
+  color: var(--color-text-primary);
+  border-bottom: 1px solid var(--color-border-subtle);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+
+.table-row:last-child {
+  border-bottom: 0;
+}
+
+.table-row:hover {
+  background: var(--color-bg-muted);
+}
+
+.table-row.focused {
+  background: var(--color-accent-soft);
+  box-shadow: inset 2px 0 0 var(--color-accent);
+}
+
+.table-row.focused:hover {
+  background: var(--color-accent-soft);
+}
+
+.table-row > span,
+.table-row > div {
+  min-width: 0;
+  padding: 0 var(--space-3);
+}
+
+.table-row > span.connection-duration {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-secondary);
+  font-variant-numeric: tabular-nums;
+}
+
+.connection-duration svg {
+  flex: 0 0 auto;
+  color: var(--color-text-tertiary);
+}
+
+.table-row small,
+.name-cell span,
+.status-cell small {
+  display: block;
+  margin-top: 2px;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.name-cell strong,
+.status-cell strong {
+  display: block;
+  overflow: hidden;
+  color: var(--color-text-primary);
+  font: var(--weight-medium) var(--text-base) / 1.3 var(--font-sans);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+}
+
+/* ============================================================
+   Checkbox cell (custom checkbox)
+   ============================================================ */
+.check-cell {
+  position: relative;
+  justify-self: center;
+  width: 16px;
+  height: 16px;
+  border: 1.5px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-subtle);
+  cursor: pointer;
+  transition:
+    background var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.check-cell:hover {
+  border-color: var(--color-accent);
+}
+
+.check-cell:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+}
+
+.check-cell.checked {
+  border-color: var(--color-accent);
+  background: var(--color-accent);
+}
+
+.check-cell.checked::after {
+  position: absolute;
+  top: 1px;
+  left: 4px;
+  width: 5px;
+  height: 9px;
+  border-right: 2px solid var(--color-accent-on);
+  border-bottom: 2px solid var(--color-accent-on);
+  content: "";
+  transform: rotate(45deg);
+}
+
+.check-cell:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+/* ============================================================
+   Status cell — pill chip with dot
+   (Status semantic split: success=green, accent reserved for brand)
+   ============================================================ */
+.status-cell {
+  display: grid;
+  grid-template-rows: auto auto;
+  align-content: center;
+  gap: 2px;
+}
+
+.status-cell strong {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  width: fit-content;
+  height: 22px;
+  padding: 0 var(--space-2) 0 var(--space-2);
+  border-radius: var(--radius-full);
+  font: var(--weight-medium) var(--text-xs) / 1 var(--font-sans);
+  letter-spacing: 0.01em;
+  color: var(--color-text-secondary);
+  background: var(--color-bg-emphasis);
+  border: 1px solid var(--color-border-subtle);
+}
+
+.status-cell strong::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+/* Hide raw inner dot span — pill takes over */
+.status-cell > span:first-child {
+  display: none;
+}
+
+/* Running — green */
+.status-cell.running strong {
+  color: var(--color-success);
+  background: var(--color-success-soft);
+  border-color: var(--color-success-border);
+}
+
+/* Connecting / authenticating / reconnecting — amber */
+.status-cell.connecting strong,
+.status-cell.authenticating strong,
+.status-cell.reconnecting strong {
+  color: var(--color-warning);
+  background: var(--color-warning-soft);
+  border-color: var(--color-warning-border);
+}
+
+/* Stopping — amber too (transitional) */
+.status-cell.stopping strong {
+  color: var(--color-warning);
+  background: var(--color-warning-soft);
+  border-color: var(--color-warning-border);
+}
+
+/* Failed — red */
+.status-cell.failed strong {
+  color: var(--color-danger);
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger-border);
+}
+
+.status-cell small {
+  max-width: 92px;
+}
+
+/* ============================================================
+   Row inline action button (.row-play)
+   Linear pattern: visible on hover/selected/running, hidden otherwise
+   ============================================================ */
+.row-play {
+  justify-self: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0.55;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    border-color var(--duration-fast) var(--ease-out);
+}
+
+.table-row:hover .row-play,
+.table-row.focused .row-play,
+.row-play.stop {
+  opacity: 1;
+}
+
+.row-play:hover {
+  color: var(--color-success);
+  background: var(--color-success-soft);
+  border-color: var(--color-success-border);
+}
+
+.row-play.stop {
+  color: var(--color-danger);
+}
+
+.row-play.stop:hover {
+  background: var(--color-danger-soft);
+  border-color: var(--color-danger-border);
+}
+
+.row-play:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+  opacity: 1;
+}
+
+.row-play:disabled {
+  cursor: wait;
+  opacity: 0.35;
+}
+
+/* ============================================================
+   Empty state — when no profiles
+   ============================================================ */
+.profiles-empty {
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: var(--space-3);
+  padding: var(--space-12) var(--space-6);
+  color: var(--color-text-tertiary);
+  text-align: center;
+}
+
+.profiles-empty-icon {
+  width: 40px;
+  height: 40px;
+  opacity: 0.6;
+}
+
+.profiles-empty .empty-state-action {
+  margin-top: var(--space-2);
+}
+
+.profiles-empty strong {
+  font: var(--weight-semibold) var(--text-lg) / 1.3 var(--font-sans);
+  color: var(--color-text-secondary);
+}
+
+.profiles-empty p {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  max-width: 320px;
+}
+
+/* ============================================================
+   Table footer
+   ============================================================ */
+.table-footer {
+  display: flex;
+  gap: var(--space-5);
+  min-height: 40px;
+  padding: 0 var(--space-4);
+  align-items: center;
+  color: var(--color-text-tertiary);
+  border-top: 1px solid var(--color-border-subtle);
+  font-size: var(--text-sm);
+}
+
+/* ============================================================
+   Profile filter popover
+   ============================================================ */
+.filter-shell {
+  position: relative;
+  z-index: 30;
+  display: inline-flex;
+}
+
+.square-button.active {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-border);
+}
+
+.filter-popover {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 90;
+  display: grid;
+  gap: var(--space-2);
+  width: 232px;
+  padding: var(--space-3);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-lg);
+}
+
+.filter-popover strong {
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+}
+
+.filter-popover p {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.filter-popover button {
+  justify-content: flex-start;
+  height: 30px;
+  padding: 0 var(--space-2);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+  font-size: var(--text-sm);
+}
+
+.filter-popover button:not(:disabled):hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-emphasis);
+}
+
+.filter-popover button.active {
+  color: var(--color-accent);
+  border-color: var(--color-accent-border);
+  background: var(--color-accent-soft);
+}
+
+.filter-popover button:disabled {
+  color: var(--color-text-disabled);
+  cursor: not-allowed;
+}

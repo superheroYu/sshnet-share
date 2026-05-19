@@ -1,0 +1,467 @@
+/* ============================================================
+   App shell — top-level grid (titlebar / content / statusbar)
+   ============================================================ */
+.app-frame {
+  display: grid;
+  grid-template-rows: 56px minmax(0, 1fr) 32px;
+  height: 100vh;
+  min-height: 100vh;
+  overflow: hidden;
+  color: var(--color-text-primary);
+  background:
+    radial-gradient(circle at 15% -10%, rgba(34, 211, 238, 0.06), transparent 40%),
+    linear-gradient(180deg, #0d1115 0%, var(--color-bg-canvas) 100%);
+}
+
+/* ============================================================
+   Titlebar
+   ============================================================ */
+.titlebar {
+  position: relative;
+  z-index: 40;
+  display: grid;
+  grid-template-columns: 220px minmax(420px, 1fr) auto;
+  align-items: center;
+  min-width: 0;
+  padding: 0 var(--space-5);
+  border-bottom: 1px solid var(--color-border-subtle);
+  background: rgba(13, 17, 21, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+}
+
+.app-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
+.app-title img {
+  width: 30px;
+  height: 30px;
+}
+
+.app-title strong {
+  font: var(--weight-semibold) var(--text-md) / 1.2 var(--font-sans);
+  letter-spacing: -0.01em;
+  color: var(--color-text-primary);
+}
+
+/* ============================================================
+   Top tabs
+   ============================================================ */
+.top-tabs {
+  display: flex;
+  align-items: stretch;
+  height: 100%;
+  min-width: 0;
+}
+
+.top-tabs button {
+  position: relative;
+  min-width: 0;
+  height: 100%;
+  padding: 0 var(--space-5);
+  color: var(--color-text-secondary);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  font: var(--weight-medium) var(--text-base) / 1 var(--font-sans);
+  letter-spacing: -0.01em;
+  cursor: pointer;
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.top-tabs button:hover {
+  color: var(--color-text-primary);
+}
+
+.top-tabs button.active {
+  color: var(--color-text-primary);
+  font-weight: var(--weight-semibold);
+}
+
+.top-tabs button.active::after {
+  content: "";
+  position: absolute;
+  left: var(--space-5);
+  right: var(--space-5);
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: var(--color-accent);
+}
+
+.top-tabs button:focus-visible {
+  outline: 0;
+  box-shadow: inset 0 0 0 2px var(--color-accent);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   Window tools (right side of titlebar)
+   ============================================================ */
+.window-tools {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.window-tool-item {
+  display: inline-flex;
+}
+
+.quick-panel {
+  position: absolute;
+  top: calc(100% + var(--space-3));
+  right: 0;
+  z-index: 120;
+  display: grid;
+  gap: var(--space-2);
+  width: 232px;
+  padding: var(--space-3);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  background: var(--color-bg-elevated);
+  box-shadow: var(--shadow-lg);
+}
+
+.notifications-panel {
+  width: 320px;
+}
+
+.help-panel {
+  width: 340px;
+}
+
+.diagnostic-panel-block {
+  display: grid;
+  gap: var(--space-2);
+  padding: var(--space-2);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+}
+
+.quick-panel p.diagnostic-path {
+  align-items: flex-start;
+  word-break: break-all;
+}
+
+.quick-panel-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.quick-panel-title span {
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+}
+
+.event-list {
+  display: grid;
+  gap: var(--space-2);
+  max-height: 280px;
+  overflow: auto;
+}
+
+.event-item {
+  display: grid;
+  gap: 3px;
+  padding: var(--space-2);
+  border: 1px solid var(--color-border-subtle);
+  border-left: 2px solid var(--color-accent);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+}
+
+.event-item.level-warn {
+  border-left-color: var(--color-warning);
+}
+
+.event-item.level-error {
+  border-left-color: var(--color-danger);
+}
+
+.event-time {
+  color: var(--color-text-tertiary);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+}
+
+.event-item p {
+  color: var(--color-text-tertiary);
+}
+
+.quick-panel-actions {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.quick-panel strong {
+  color: var(--color-text-primary);
+  font-size: var(--text-sm);
+}
+
+.quick-panel p {
+  margin: 0;
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+  line-height: 1.45;
+}
+
+.quick-panel p.quick-panel-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-secondary);
+}
+
+.window-tools .quick-panel button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  justify-content: flex-start;
+  width: 100%;
+  height: 30px;
+  padding: 0 var(--space-2);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-muted);
+  font-size: var(--text-sm);
+}
+
+.window-tools .quick-panel button:not(:disabled):hover {
+  border-color: var(--color-border-strong);
+  background: var(--color-bg-emphasis);
+}
+
+.window-tools .quick-panel button svg,
+.quick-panel-meta svg {
+  flex: 0 0 auto;
+  color: var(--color-text-tertiary);
+}
+
+/* —— Service pill (statusbar style, also in titlebar) —— */
+.service-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  height: 26px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-full);
+  background: var(--color-bg-subtle);
+  font-size: var(--text-sm);
+}
+
+.status-led {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--color-success);
+  box-shadow: 0 0 0 3px var(--color-success-soft);
+}
+
+/* ============================================================
+   Content shell — main panel + editor sidebar
+   ============================================================ */
+.content-shell {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 380px;
+  min-height: 0;
+  overflow: hidden;
+  transition: grid-template-columns var(--duration-base) var(--ease-out);
+}
+
+.editor-closed .content-shell {
+  grid-template-columns: minmax(0, 1fr) 0;
+}
+
+.main-panel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) 220px;
+  gap: var(--space-4);
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+  padding: var(--space-5);
+}
+
+.main-panel.single-page {
+  grid-template-rows: minmax(0, 1fr);
+}
+
+.main-panel.logs-hidden {
+  grid-template-rows: auto minmax(0, 1fr);
+}
+
+.main-panel.logs-expanded {
+  grid-template-rows: auto minmax(0, 0.62fr) minmax(300px, 1fr);
+}
+
+/* ============================================================
+   Action row (toolbar above the table)
+   ============================================================ */
+.action-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-width: 0;
+  flex-wrap: wrap;
+}
+
+.action-row.connections-actions {
+  justify-content: space-between;
+}
+
+.primary-actions,
+.search-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.primary-actions {
+  flex: 1 1 520px;
+  flex-wrap: wrap;
+}
+
+.search-tools {
+  flex: 0 1 420px;
+  justify-content: flex-end;
+}
+
+.primary-actions > button,
+.search-tools > * {
+  flex: 0 0 auto;
+}
+
+.connection-topology {
+  display: flex;
+  align-items: center;
+  flex: 1 1 560px;
+  min-width: 0;
+}
+
+.topology-node {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 150px;
+  height: 46px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-bg-elevated) 88%, transparent), var(--color-bg-muted));
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.topology-node-primary {
+  border-color: var(--color-accent-border);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--color-accent-soft) 70%, var(--color-bg-elevated)), var(--color-bg-muted));
+}
+
+.topology-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 30px;
+  height: 30px;
+  color: var(--color-accent);
+  border: 1px solid var(--color-accent-border);
+  border-radius: var(--radius-full);
+  background: var(--color-accent-soft);
+}
+
+.topology-copy {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.topology-copy small {
+  color: var(--color-text-tertiary);
+  font-size: var(--text-xs);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.topology-copy strong {
+  color: var(--color-text-primary);
+  font: var(--weight-semibold) var(--text-sm) / 1.1 var(--font-sans);
+  white-space: nowrap;
+}
+
+.topology-bridge {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 1 54px;
+  min-width: 22px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-accent-border), var(--color-accent), var(--color-accent-border));
+}
+
+@media (max-width: 1180px) {
+  .connection-topology {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .topology-bridge {
+    display: none;
+  }
+}
+
+/* ============================================================
+   Statusbar
+   ============================================================ */
+.statusbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-5);
+  min-width: 0;
+  padding: 0 var(--space-5);
+  color: var(--color-text-secondary);
+  background: rgba(13, 17, 21, 0.72);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  box-shadow: inset 0 1px 0 var(--color-border-subtle);
+  font-size: var(--text-sm);
+}
+
+.statusbar span {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.statusbar .ready {
+  color: var(--color-success);
+}
+
+.statusbar .warning,
+.statusbar .pending {
+  color: var(--color-warning);
+}
+
+.statusbar .error {
+  color: var(--color-danger);
+}
