@@ -191,6 +191,7 @@ export const localeText = {
       clearConfirmCancel: "取消",
       clearConfirmSubmit: "清空日志",
       emptyHint: "隧道运行后，日志会出现在这里。",
+      emptyRunningHint: "当前日志视图为空。新的运行日志会继续显示在这里。",
       emptyHintCta: "前往配置列表启动一个隧道",
     },
     editor: {
@@ -558,6 +559,7 @@ export const localeText = {
       clearConfirmCancel: "Cancel",
       clearConfirmSubmit: "Clear Logs",
       emptyHint: "Logs will appear here once a tunnel is running.",
+      emptyRunningHint: "The current log view is empty. New runtime log entries will appear here.",
       emptyHintCta: "Open Profiles to start a tunnel",
     },
     editor: {

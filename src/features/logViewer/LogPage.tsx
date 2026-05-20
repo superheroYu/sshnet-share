@@ -14,6 +14,7 @@ import { LogControls } from "./LogControls";
 interface LogPageProps {
   text: LocaleText;
   profiles: Profile[];
+  runningCount: number;
   renderedLogLines: LogLineViewModel[];
   logProfileFilter: LogProfileFilter;
   logLevelFilter: LogLevelFilter[];
@@ -38,6 +39,7 @@ interface LogPageProps {
 
 export function LogPage(props: LogPageProps) {
   const { text, renderedLogLines, logPreview, onCloseLogPreview, onOpenProfiles } = props;
+  const hasRunningTunnels = props.runningCount > 0;
 
   return (
     <section className="log-page">
@@ -81,10 +83,12 @@ export function LogPage(props: LogPageProps) {
           <div className="logs-empty">
             <Inbox aria-hidden />
             <strong>{text.logs.title}</strong>
-            <p>{text.logs.emptyHint}</p>
-            <button type="button" className="logs-empty-cta" onClick={onOpenProfiles}>
-              {text.logs.emptyHintCta}
-            </button>
+            <p>{hasRunningTunnels ? text.logs.emptyRunningHint : text.logs.emptyHint}</p>
+            {hasRunningTunnels ? null : (
+              <button type="button" className="logs-empty-cta" onClick={onOpenProfiles}>
+                {text.logs.emptyHintCta}
+              </button>
+            )}
           </div>
         ) : (
           renderedLogLines.map((line) => (

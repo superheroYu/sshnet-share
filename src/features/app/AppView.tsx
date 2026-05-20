@@ -568,6 +568,7 @@ export function AppView({ controller }: { controller: AppController }) {
             <LogPage
               text={text}
               profiles={profiles}
+              runningCount={runningCount}
               renderedLogLines={renderedLogLines}
               logProfileFilter={logProfileFilter}
               logLevelFilter={logLevelFilter}
