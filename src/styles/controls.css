@@ -124,6 +124,13 @@
   border-color: transparent;
 }
 
+/* Floating overlay toggle — accent highlight while the overlay is shown */
+.window-tools button.floating-toggle.active {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-border);
+}
+
 /* ============================================================
    Primary CTA — accent-button & editor save
    ============================================================ */

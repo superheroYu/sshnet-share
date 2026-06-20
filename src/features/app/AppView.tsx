@@ -327,18 +327,16 @@ export function AppView({ controller }: { controller: AppController }) {
             <span className="status-led" />
             {text.window.serviceRunning}
           </span>
-          <div className="window-tool-item">
-            <button
-              type="button"
-              className={isFloatingVisible ? "active" : ""}
-              title={isFloatingVisible ? text.window.floatingHide : text.window.floatingShow}
-              aria-label={text.window.floating}
-              aria-pressed={isFloatingVisible}
-              onClick={() => void toggleFloatingWindow()}
-            >
-              <PictureInPicture2 size={18} />
-            </button>
-          </div>
+          <button
+            type="button"
+            className={`floating-toggle ${isFloatingVisible ? "active" : ""}`}
+            title={isFloatingVisible ? text.window.floatingHide : text.window.floatingShow}
+            aria-label={text.window.floating}
+            aria-pressed={isFloatingVisible}
+            onClick={() => void toggleFloatingWindow()}
+          >
+            <PictureInPicture2 size={18} />
+          </button>
           <div className="window-tool-item">
             <button
               type="button"
