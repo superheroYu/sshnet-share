@@ -12,6 +12,7 @@ import {
   List,
   MoreVertical,
   PanelBottomOpen,
+  PictureInPicture2,
   Play,
   Plus,
   Settings,
@@ -79,6 +80,7 @@ export function AppView({ controller }: { controller: AppController }) {
     availableUpdate,
     updateStatusMessage,
     runtimeLogMode,
+    isFloatingVisible,
     logLevelFilter,
     logProfileFilter,
     logFromDateTime,
@@ -108,6 +110,7 @@ export function AppView({ controller }: { controller: AppController }) {
     setIsEditorOpen,
     setSearchQuery,
     setRuntimeLogMode,
+    toggleFloatingWindow,
     setLogProfileFilter,
     setLogFromDateTime,
     setLogToDateTime,
@@ -324,6 +327,18 @@ export function AppView({ controller }: { controller: AppController }) {
             <span className="status-led" />
             {text.window.serviceRunning}
           </span>
+          <div className="window-tool-item">
+            <button
+              type="button"
+              className={isFloatingVisible ? "active" : ""}
+              title={isFloatingVisible ? text.window.floatingHide : text.window.floatingShow}
+              aria-label={text.window.floating}
+              aria-pressed={isFloatingVisible}
+              onClick={() => void toggleFloatingWindow()}
+            >
+              <PictureInPicture2 size={18} />
+            </button>
+          </div>
           <div className="window-tool-item">
             <button
               type="button"
@@ -555,8 +570,10 @@ export function AppView({ controller }: { controller: AppController }) {
               availableUpdate={availableUpdate}
               updateStatusMessage={updateStatusMessage}
               text={text}
+              isFloatingVisible={isFloatingVisible}
               onToggleStartOnBoot={toggleStartOnBoot}
               onToggleSilentStartOnBoot={toggleSilentStartOnBoot}
+              onToggleFloatingWindow={() => void toggleFloatingWindow()}
               onCheckForUpdates={() => void checkForUpdates()}
               onInstallUpdate={() => void installAvailableUpdate()}
               onUpdateAppSetting={updateAppSetting}

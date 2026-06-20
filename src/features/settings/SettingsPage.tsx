@@ -21,8 +21,10 @@ interface SettingsPageProps {
   availableUpdate: AvailableUpdateInfo | null;
   updateStatusMessage: string;
   text: LocaleText;
+  isFloatingVisible: boolean;
   onToggleStartOnBoot: () => void;
   onToggleSilentStartOnBoot: () => void;
+  onToggleFloatingWindow: () => void;
   onCheckForUpdates: () => void;
   onInstallUpdate: () => void;
   onUpdateAppSetting: <K extends keyof AppSettings>(key: K, value: AppSettings[K]) => void;
@@ -46,8 +48,10 @@ export function SettingsPage({
   availableUpdate,
   updateStatusMessage,
   text,
+  isFloatingVisible,
   onToggleStartOnBoot,
   onToggleSilentStartOnBoot,
+  onToggleFloatingWindow,
   onCheckForUpdates,
   onInstallUpdate,
   onUpdateAppSetting,
@@ -157,6 +161,22 @@ export function SettingsPage({
             <em>
               {appSettings.silentStartOnBoot ? text.settings.enabled : text.settings.disabled}
             </em>
+          </button>
+        </div>
+        <div className="settings-toggle-row">
+          <div>
+            <strong>{text.settings.floatingOverlay}</strong>
+            <span>{text.settings.floatingOverlayDescription}</span>
+          </div>
+          <button
+            className={`switch-button ${isFloatingVisible ? "active" : ""}`}
+            type="button"
+            role="switch"
+            aria-checked={isFloatingVisible}
+            onClick={onToggleFloatingWindow}
+          >
+            <span />
+            <em>{isFloatingVisible ? text.settings.enabled : text.settings.disabled}</em>
           </button>
         </div>
         <div className="settings-action-row">

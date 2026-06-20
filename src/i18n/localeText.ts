@@ -20,6 +20,9 @@ export const localeText = {
       notifications: "通知",
       help: "帮助",
       more: "更多",
+      floating: "状态浮窗",
+      floatingShow: "显示状态浮窗",
+      floatingHide: "隐藏状态浮窗",
       notificationsDescription: (count: number) =>
         count > 0 ? `当前有 ${count} 个活动隧道。` : "当前没有活动隧道。",
       notificationsEventCount: (count: number) => `${count} 条`,
@@ -34,6 +37,13 @@ export const localeText = {
       exportingDiagnosticBundle: "导出中",
       openDiagnosticBundleFolder: "在文件管理器中定位",
       diagnosticBundlePath: "诊断包路径",
+    },
+    floating: {
+      title: "连接状态",
+      runningOf: (running: number, total: number) => `${running}/${total} 运行中`,
+      empty: "暂无配置",
+      openMain: "打开主窗口",
+      close: "隐藏浮窗",
     },
     settings: {
       defaultTitle: "默认配置设置",
@@ -66,6 +76,8 @@ export const localeText = {
       startOnBootDescription: "登录 Windows 后自动启动 SSHNet Share，便于托盘常驻。",
       silentStartOnBoot: "开机静默启动",
       silentStartOnBootDescription: "通过开机自启动进入时隐藏主窗口，只保留托盘入口；手动启动仍会显示窗口。",
+      floatingOverlay: "状态浮窗",
+      floatingOverlayDescription: "显示一个始终置顶的小窗，实时查看每个连接的运行状态。",
       enabled: "已开启",
       disabled: "已关闭",
       updateTitle: "应用更新",
@@ -386,6 +398,9 @@ export const localeText = {
       notifications: "Notifications",
       help: "Help",
       more: "More",
+      floating: "Status overlay",
+      floatingShow: "Show status overlay",
+      floatingHide: "Hide status overlay",
       notificationsDescription: (count: number) =>
         count > 0 ? `${count} active tunnel${count === 1 ? "" : "s"} running.` : "No active tunnels.",
       notificationsEventCount: (count: number) => `${count} event${count === 1 ? "" : "s"}`,
@@ -400,6 +415,13 @@ export const localeText = {
       exportingDiagnosticBundle: "Exporting",
       openDiagnosticBundleFolder: "Reveal in File Manager",
       diagnosticBundlePath: "Bundle path",
+    },
+    floating: {
+      title: "Connections",
+      runningOf: (running: number, total: number) => `${running}/${total} running`,
+      empty: "No profiles yet",
+      openMain: "Open main window",
+      close: "Hide overlay",
     },
     settings: {
       defaultTitle: "Default Profile Settings",
@@ -433,6 +455,9 @@ export const localeText = {
       silentStartOnBoot: "Silent startup",
       silentStartOnBootDescription:
         "Hide the main window when launched from Windows sign-in and keep the tray entry available. Manual launches still show the window.",
+      floatingOverlay: "Status overlay",
+      floatingOverlayDescription:
+        "Show a small always-on-top window with the live status of every connection.",
       enabled: "Enabled",
       disabled: "Disabled",
       updateTitle: "App Updates",

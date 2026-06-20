@@ -87,6 +87,14 @@ impl TrayLanguage {
         }
     }
 
+    fn floating_label(self) -> &'static str {
+        match self {
+            // 显示状态浮窗
+            Self::ZhCn => "\u{663e}\u{793a}\u{72b6}\u{6001}\u{6d6e}\u{7a97}",
+            Self::EnUs => "Toggle Status Overlay",
+        }
+    }
+
     fn quit_label(self) -> &'static str {
         match self {
             Self::ZhCn => "\u{9000}\u{51fa}",
@@ -104,6 +112,8 @@ fn build_tray_menu<R: tauri::Runtime, M: Manager<R>>(
         MenuItem::with_id(app, TRAY_START, language.start_label(), true, None::<&str>)?;
     let stop_item = MenuItem::with_id(app, TRAY_STOP, language.stop_label(), true, None::<&str>)?;
     let logs_item = MenuItem::with_id(app, TRAY_LOGS, language.logs_label(), true, None::<&str>)?;
+    let floating_item =
+        MenuItem::with_id(app, TRAY_FLOATING, language.floating_label(), true, None::<&str>)?;
     let quit_item = MenuItem::with_id(app, TRAY_QUIT, language.quit_label(), true, None::<&str>)?;
     let separator = PredefinedMenuItem::separator(app)?;
     Menu::with_items(
@@ -113,6 +123,7 @@ fn build_tray_menu<R: tauri::Runtime, M: Manager<R>>(
             &start_item,
             &stop_item,
             &logs_item,
+            &floating_item,
             &separator,
             &quit_item,
         ],
@@ -351,6 +362,7 @@ pub(super) fn setup_tray(app: &mut tauri::App) -> tauri::Result<()> {
         .on_menu_event(|app, event| match event.id().as_ref() {
             TRAY_OPEN => show_main_window(app),
             TRAY_LOGS => show_logs_window(app),
+            TRAY_FLOATING => toggle_floating_window_inner(app),
             TRAY_START => start_saved_profiles_from_tray(app),
             TRAY_STOP => stop_tunnels_from_tray(app),
             TRAY_QUIT => app.exit(0),

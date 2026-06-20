@@ -1,5 +1,5 @@
 export const APP_INFO = {
-  version: "0.1.0",
+  version: "0.1.2",
   authorName: "superheroYu",
   authorUrl: "https://github.com/superheroYu",
   repositoryUrl: "https://github.com/superheroYu/sshnet-share",

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.1.2 - 2026-06-20
+
+- Added a floating status overlay: a frameless, always-on-top translucent window that shows each connection's live status, ports, and uptime. Toggle it from the title bar button, the Settings page, or the tray menu.
+
 ## 0.1.1 - 2026-05-20
 
 - Fixed the system tray right-click menu so it follows the selected interface language.

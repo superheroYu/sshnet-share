@@ -8,7 +8,7 @@
 
 [![License: PolyForm NC 1.0.0](https://img.shields.io/badge/license-PolyForm%20NC%201.0.0-blue.svg)](LICENSE)
 [![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6.svg?logo=windows&logoColor=white)](#platform-support)
-[![Release: v0.1.1](https://img.shields.io/badge/release-v0.1.1-brightgreen.svg?logo=github&logoColor=white)](https://github.com/superheroYu/sshnet-share/releases/latest)
+[![Release: v0.1.2](https://img.shields.io/badge/release-v0.1.2-brightgreen.svg?logo=github&logoColor=white)](https://github.com/superheroYu/sshnet-share/releases/latest)
 
 [![Tauri 2](https://img.shields.io/badge/Tauri-2-FFC131.svg?logo=tauri&logoColor=white)](https://tauri.app)
 [![React 19](https://img.shields.io/badge/React-19-61DAFB.svg?logo=react&logoColor=white)](https://react.dev)
@@ -27,7 +27,7 @@ SSHNet Share is a Windows desktop client that brings one or more local proxy end
 <table>
   <tr>
     <td width="170"><b>Latest release</b></td>
-    <td><code>v0.1.1</code> &mdash; <a href="https://github.com/superheroYu/sshnet-share/releases/latest">Windows installer on Releases</a></td>
+    <td><code>v0.1.2</code> &mdash; <a href="https://github.com/superheroYu/sshnet-share/releases/latest">Windows installer on Releases</a></td>
   </tr>
   <tr>
     <td><b>Repository</b></td>
@@ -62,7 +62,7 @@ SSHNet Share is a Windows desktop client that brings one or more local proxy end
 
 ## Platform Support
 
-SSHNet Share `v0.1.1` is **Windows-only**. The current packaging, updater workflow, credential storage, and OpenSSH behavior checks target Windows desktop environments.
+SSHNet Share `v0.1.2` is **Windows-only**. The current packaging, updater workflow, credential storage, and OpenSSH behavior checks target Windows desktop environments.
 
 ## Tech Stack
 

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useRef, useState } from "react";
 import { invoke } from "@tauri-apps/api/core";
-import { listen } from "@tauri-apps/api/event";
+import { emit, listen } from "@tauri-apps/api/event";
 import {
   disable as disableAutostart,
   enable as enableAutostart,
@@ -82,6 +82,7 @@ export function useAppController() {
   const [isDiscoveringProxy, setIsDiscoveringProxy] = useState(false);
   const [isStartupSyncing, setIsStartupSyncing] = useState(false);
   const [runtimeLogMode, setRuntimeLogMode] = useState<RuntimeLogMode>("dock");
+  const [isFloatingVisible, setIsFloatingVisible] = useState(false);
   const [pendingDiscardChange, setPendingDiscardChange] = useState<{
     resolve: (proceed: boolean) => void;
   } | null>(null);
@@ -213,11 +214,41 @@ export function useAppController() {
   }, []);
 
   useEffect(() => {
+    let unlisten: (() => void) | undefined;
+    let disposed = false;
+
+    void invoke<boolean>("is_floating_window_visible")
+      .then((visible) => {
+        if (!disposed) {
+          setIsFloatingVisible(visible);
+        }
+      })
+      .catch(() => {});
+
+    void listen<boolean>("floating-visibility-changed", ({ payload }) => {
+      setIsFloatingVisible(Boolean(payload));
+    }).then((handler) => {
+      if (disposed) {
+        handler();
+      } else {
+        unlisten = handler;
+      }
+    });
+
+    return () => {
+      disposed = true;
+      unlisten?.();
+    };
+  }, []);
+
+  useEffect(() => {
     if (typeof window === "undefined") {
       return;
     }
 
     window.localStorage.setItem(APP_SETTINGS_STORAGE_KEY, JSON.stringify(appSettings));
+    // Mirror language / color mode to the floating overlay window.
+    void emit("sshnet-settings-changed", appSettings).catch(() => {});
 
     const updateResolvedColor = () => {
       setResolvedColorMode(resolveColorMode(appSettings.colorMode));
@@ -1082,6 +1113,14 @@ export function useAppController() {
     return tunnelStatuses[profile.id]?.status ?? "stopped";
   }
 
+  async function toggleFloatingWindow() {
+    try {
+      await invoke("toggle_floating_window");
+    } catch (error) {
+      appendLog("WARN", text.messages.readStatusFailed(displayError(error, text)));
+    }
+  }
+
   function changeSection(section: SectionKey) {
     setActiveSection(section);
     if (section === "logs" || section === "settings") {
@@ -1142,6 +1181,7 @@ export function useAppController() {
     isExportingDiagnosticBundle, lastDiagnosticBundle,
     isCheckingForUpdate, isInstallingUpdate, availableUpdate, updateStatusMessage,
     runtimeLogMode, logLevelFilter, logProfileFilter, logFromDateTime, logToDateTime,
+    isFloatingVisible,
     passwordPrompt, passwordValue, text,
     visibleProfiles, renderedLogLines, runtimeLogLines, draftValidationError, visibleSelectedProfiles,
     invalidSelectedProfileNames, runningCount, serverCommand, sshPreview, hostKeyScanMatchesDraft,
@@ -1157,6 +1197,7 @@ export function useAppController() {
     openProfileEditor, viewProfileLogs, statusClass, exportLogs, previewLogs, setLogPreview,
     openLastLogExportFolder, exportDiagnosticBundle, openLastDiagnosticBundleFolder,
     checkForUpdates, installAvailableUpdate,
+    toggleFloatingWindow,
     clearLogs, toggleLogLevel, toggleSilentStartOnBoot, updateDraft, updateNumberField,
     updateNoProxy, probeLocalProxy,
     discoverLocalProxy, applyProxyCandidate, applySshConfigHost, scanHostKeys, trustScannedHostKeys,

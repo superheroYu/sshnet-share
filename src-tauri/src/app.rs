@@ -64,6 +64,7 @@ const TRAY_OPEN: &str = "open";
 const TRAY_START: &str = "start";
 const TRAY_STOP: &str = "stop";
 const TRAY_LOGS: &str = "logs";
+const TRAY_FLOATING: &str = "floating";
 const TRAY_QUIT: &str = "quit";
 const TRAY_ICON_ID: &str = "main";
 const TRAY_SHOW_LOGS_EVENT: &str = "tray-show-logs";
@@ -548,6 +549,9 @@ use environment::*;
 #[path = "tray.rs"]
 mod tray;
 use tray::*;
+#[path = "floating.rs"]
+mod floating;
+use floating::*;
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -611,10 +615,18 @@ pub fn run() {
             Ok(())
         })
         .on_window_event(|window, event| {
-            if window.label() == "main" {
-                if let WindowEvent::CloseRequested { api, .. } = event {
-                    api.prevent_close();
-                    let _ = window.hide();
+            if let WindowEvent::CloseRequested { api, .. } = event {
+                match window.label() {
+                    "main" => {
+                        api.prevent_close();
+                        let _ = window.hide();
+                    }
+                    "floating" => {
+                        api.prevent_close();
+                        let _ = window.hide();
+                        emit_floating_visibility(window.app_handle(), false);
+                    }
+                    _ => {}
                 }
             }
         })
@@ -647,7 +659,11 @@ pub fn run() {
             start_tunnel,
             stop_tunnel,
             stop_all_tunnels,
-            get_tunnel_status
+            get_tunnel_status,
+            toggle_floating_window,
+            set_floating_window_visible,
+            is_floating_window_visible,
+            focus_main_window
         ])
         .build(tauri::generate_context!())
         .expect("error while building tauri application")
