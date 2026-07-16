@@ -1,9 +1,12 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import {
   Activity,
+  ChevronDown,
+  ChevronUp,
   Clock,
   Copy,
   Filter,
+  GripVertical,
   Inbox,
   List,
   Lock,
@@ -45,6 +48,9 @@ interface ProfilesWorkspaceProps {
   hasSingleVisibleSelection: boolean;
   invalidSelectedProfileNames: string[];
   isConnectionsView: boolean;
+  canReorder: boolean;
+  reorderProfiles: (sourceId: string, targetId: string) => void;
+  moveProfile: (profileId: string, direction: -1 | 1) => void;
   createNewProfile: () => void;
   startProfiles: (targetProfiles?: Profile[]) => void;
   stopProfiles: (targetProfiles?: Profile[]) => void;
@@ -79,6 +85,9 @@ export function ProfilesWorkspace({
   hasSingleVisibleSelection,
   invalidSelectedProfileNames,
   isConnectionsView,
+  canReorder,
+  reorderProfiles,
+  moveProfile,
   createNewProfile,
   startProfiles,
   stopProfiles,
@@ -97,7 +106,16 @@ export function ProfilesWorkspace({
   const filterRef = useRef<HTMLDivElement>(null);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [nowMs, setNowMs] = useState(() => Date.now());
+  const [draggingId, setDraggingId] = useState<string | null>(null);
+  const [dragOverId, setDragOverId] = useState<string | null>(null);
+  // Native drag events are "continuous" in React 19, so a setState in onDragStart
+  // may not commit before the next dragover fires — the stale draggingId would then
+  // skip preventDefault and the browser shows a "no-drop" cursor. A ref stays in sync.
+  const draggingIdRef = useRef<string | null>(null);
   const hasRunningConnections = runningCount > 0;
+  const draggingIndex = draggingId
+    ? visibleProfiles.findIndex((item) => item.id === draggingId)
+    : -1;
 
   useEffect(() => {
     if (!isFilterOpen) {
@@ -314,6 +332,7 @@ export function ProfilesWorkspace({
     
                   <div className={`config-table ${isConnectionsView ? "connections-table" : ""}`}>
                   <div className="table-head">
+                    {!isConnectionsView ? <span className="reorder-head" aria-hidden /> : null}
                     {!isConnectionsView ? (
                       <button
                         className={`check-cell ${
@@ -365,9 +384,19 @@ export function ProfilesWorkspace({
                         ) : null}
                       </div>
                     ) : null}
-                    {visibleProfiles.map((profile) => {
+                    {visibleProfiles.map((profile, index) => {
                       const status = tunnelStatuses[profile.id];
                       const isSelected = selectedIds.includes(profile.id);
+                      const isDragging = draggingId === profile.id;
+                      const isDropTarget =
+                        Boolean(draggingId) && draggingId !== profile.id && dragOverId === profile.id;
+                      // The dropped row lands adjacent to the target in the drag direction, so
+                      // point the drop indicator the same way (below when dragging downward).
+                      const dropClass = isDropTarget
+                        ? draggingIndex > -1 && draggingIndex < index
+                          ? "drag-over-below"
+                          : "drag-over-above"
+                        : "";
                       const isRunning = status?.status === "running";
                       const lastConnectedAt = status?.lastConnectedAt ?? profile.lastConnectedAt;
                       const profileDisplayName = displayProfileName(profile.name, text);
@@ -376,12 +405,111 @@ export function ProfilesWorkspace({
                         : selectedProfileId === profile.id;
                       return (
                         <div
-                          className={`table-row ${isFocused ? "focused" : ""}`}
+                          className={`table-row ${isFocused ? "focused" : ""} ${
+                            isDragging ? "dragging" : ""
+                          } ${dropClass}`}
                           key={profile.id}
                           onClick={() =>
                             isConnectionsView ? selectConnection(profile) : selectProfile(profile)
                           }
+                          onDragOver={(event) => {
+                            if (!canReorder || !draggingIdRef.current) {
+                              return;
+                            }
+                            event.preventDefault();
+                            event.dataTransfer.dropEffect = "move";
+                            if (dragOverId !== profile.id) {
+                              setDragOverId(profile.id);
+                            }
+                          }}
+                          onDrop={(event) => {
+                            const sourceId =
+                              draggingIdRef.current || event.dataTransfer.getData("text/plain");
+                            if (!canReorder || !sourceId) {
+                              return;
+                            }
+                            event.preventDefault();
+                            draggingIdRef.current = null;
+                            setDraggingId(null);
+                            setDragOverId(null);
+                            reorderProfiles(sourceId, profile.id);
+                          }}
                         >
+                          {!isConnectionsView ? (
+                            <div className="reorder-cell">
+                              <div
+                                className="drag-handle"
+                                role="button"
+                                tabIndex={canReorder ? 0 : -1}
+                                aria-disabled={!canReorder}
+                                draggable={canReorder}
+                                aria-label={text.table.reorderHandle}
+                                title={canReorder ? text.table.reorderHandle : text.table.reorderHint}
+                                onClick={(event) => event.stopPropagation()}
+                                onDragStart={(event) => {
+                                  if (!canReorder) {
+                                    event.preventDefault();
+                                    return;
+                                  }
+                                  draggingIdRef.current = profile.id;
+                                  setDraggingId(profile.id);
+                                  event.dataTransfer.effectAllowed = "move";
+                                  event.dataTransfer.setData("text/plain", profile.id);
+                                  const row = event.currentTarget.closest(".table-row");
+                                  if (row instanceof HTMLElement) {
+                                    event.dataTransfer.setDragImage(row, 24, row.offsetHeight / 2);
+                                  }
+                                }}
+                                onDragEnd={() => {
+                                  draggingIdRef.current = null;
+                                  setDraggingId(null);
+                                  setDragOverId(null);
+                                }}
+                                onKeyDown={(event) => {
+                                  if (!canReorder) {
+                                    return;
+                                  }
+                                  if (event.key === "ArrowUp") {
+                                    event.preventDefault();
+                                    moveProfile(profile.id, -1);
+                                  } else if (event.key === "ArrowDown") {
+                                    event.preventDefault();
+                                    moveProfile(profile.id, 1);
+                                  }
+                                }}
+                              >
+                                <GripVertical size={16} />
+                              </div>
+                              <span className="reorder-steps">
+                                <button
+                                  type="button"
+                                  className="reorder-step"
+                                  aria-label={text.table.moveUp}
+                                  title={text.table.moveUp}
+                                  disabled={!canReorder || index === 0}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    moveProfile(profile.id, -1);
+                                  }}
+                                >
+                                  <ChevronUp size={12} />
+                                </button>
+                                <button
+                                  type="button"
+                                  className="reorder-step"
+                                  aria-label={text.table.moveDown}
+                                  title={text.table.moveDown}
+                                  disabled={!canReorder || index === visibleProfiles.length - 1}
+                                  onClick={(event) => {
+                                    event.stopPropagation();
+                                    moveProfile(profile.id, 1);
+                                  }}
+                                >
+                                  <ChevronDown size={12} />
+                                </button>
+                              </span>
+                            </div>
+                          ) : null}
                           {!isConnectionsView ? (
                             <button
                               className={`check-cell ${isSelected ? "checked" : ""}`}

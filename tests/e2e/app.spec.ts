@@ -1090,6 +1090,81 @@ test("does not recreate a default profile after deleting every profile", async (
   expect(savedProfiles).toEqual([]);
 });
 
+test("reorders profiles with the move buttons and persists the new order", async ({ page }) => {
+  const rowNames = page.locator(".table-body .name-cell strong");
+  await expect(rowNames.first()).toHaveText("Office Proxy");
+  await expect(rowNames.nth(1)).toHaveText("Home Lab");
+
+  const officeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Office Proxy" }),
+  });
+  await officeRow.getByRole("button", { name: "下移", exact: true }).click();
+
+  await expect(rowNames.first()).toHaveText("Home Lab");
+  await expect(rowNames.nth(1)).toHaveText("Office Proxy");
+
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => window.__SSHNET_TEST_CONTROLS__?.lastSavedProfiles?.map((item) => item.id) ?? null,
+      ),
+    )
+    .toEqual(["profile-home", "profile-office"]);
+});
+
+test("reorders profiles by dragging the handle and persists the new order", async ({ page }) => {
+  const rowNames = page.locator(".table-body .name-cell strong");
+  await expect(rowNames.first()).toHaveText("Office Proxy");
+  await expect(rowNames.nth(1)).toHaveText("Home Lab");
+
+  const officeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Office Proxy" }),
+  });
+  const homeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Home Lab" }),
+  });
+
+  await officeRow.locator(".drag-handle").dragTo(homeRow);
+
+  await expect(rowNames.first()).toHaveText("Home Lab");
+  await expect(rowNames.nth(1)).toHaveText("Office Proxy");
+
+  await expect
+    .poll(() =>
+      page.evaluate(
+        () => window.__SSHNET_TEST_CONTROLS__?.lastSavedProfiles?.map((item) => item.id) ?? null,
+      ),
+    )
+    .toEqual(["profile-home", "profile-office"]);
+});
+
+test("disables move-up on the first profile and move-down on the last", async ({ page }) => {
+  const officeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Office Proxy" }),
+  });
+  const homeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Home Lab" }),
+  });
+
+  await expect(officeRow.getByRole("button", { name: "上移", exact: true })).toBeDisabled();
+  await expect(officeRow.getByRole("button", { name: "下移", exact: true })).toBeEnabled();
+  await expect(homeRow.getByRole("button", { name: "下移", exact: true })).toBeDisabled();
+  await expect(homeRow.getByRole("button", { name: "上移", exact: true })).toBeEnabled();
+});
+
+test("disables reordering while searching", async ({ page }) => {
+  const officeRow = page.locator(".table-row", {
+    has: page.locator(".name-cell strong", { hasText: "Office Proxy" }),
+  });
+  await expect(officeRow.getByRole("button", { name: "下移", exact: true })).toBeEnabled();
+  await expect(officeRow.locator(".drag-handle")).toBeEnabled();
+
+  await page.getByPlaceholder("搜索配置 (Ctrl+F)").fill("Office");
+
+  await expect(officeRow.getByRole("button", { name: "下移", exact: true })).toBeDisabled();
+  await expect(officeRow.locator(".drag-handle")).toBeDisabled();
+});
+
 test("keeps toolbar actions scoped to checked profiles", async ({ page }) => {
   const start = page.getByRole("button", { name: "启动", exact: true });
   const stop = page.getByRole("button", { name: "停止", exact: true });

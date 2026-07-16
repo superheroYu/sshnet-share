@@ -19,10 +19,10 @@
 .table-row {
   display: grid;
   grid-template-columns:
-    42px minmax(180px, 1.3fr) 140px 90px minmax(170px, 1.1fr)
+    52px 42px minmax(180px, 1.3fr) 140px 90px minmax(170px, 1.1fr)
     94px 82px 118px 48px;
   align-items: center;
-  min-width: 900px;
+  min-width: 952px;
 }
 
 .config-table.connections-table .table-head,
@@ -325,6 +325,134 @@
 .row-play:disabled {
   cursor: wait;
   opacity: 0.35;
+}
+
+/* ============================================================
+   Reorder controls (drag handle + up/down steps)
+   ============================================================ */
+.reorder-head {
+  padding: 0 !important;
+}
+
+.table-row > .reorder-cell {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  padding: 0 var(--space-1);
+}
+
+.drag-handle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 30px;
+  color: var(--color-text-tertiary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background: transparent;
+  cursor: grab;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.table-row:hover .drag-handle,
+.table-row.focused .drag-handle,
+.table-row.dragging .drag-handle {
+  opacity: 0.6;
+}
+
+.drag-handle:hover:not([aria-disabled="true"]) {
+  color: var(--color-text-secondary);
+  background: var(--color-bg-emphasis);
+  opacity: 1;
+}
+
+.drag-handle:active:not([aria-disabled="true"]) {
+  cursor: grabbing;
+}
+
+.drag-handle:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+  opacity: 1;
+}
+
+.drag-handle[aria-disabled="true"] {
+  cursor: not-allowed;
+}
+
+.reorder-steps {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.reorder-step {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 14px;
+  padding: 0;
+  color: var(--color-text-tertiary);
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  cursor: pointer;
+  opacity: 0;
+  transition:
+    opacity var(--duration-fast) var(--ease-out),
+    color var(--duration-fast) var(--ease-out),
+    background var(--duration-fast) var(--ease-out);
+}
+
+.table-row:hover .reorder-step,
+.table-row.focused .reorder-step {
+  opacity: 0.6;
+}
+
+.reorder-step:hover:not(:disabled) {
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  opacity: 1;
+}
+
+.reorder-step:focus-visible {
+  outline: 0;
+  box-shadow: var(--focus-ring);
+  opacity: 1;
+}
+
+.reorder-step:disabled {
+  cursor: default;
+  opacity: 0.2;
+}
+
+.table-row.dragging {
+  opacity: 0.45;
+}
+
+.table-row.drag-over-above,
+.table-row.drag-over-below {
+  background: var(--color-accent-soft);
+}
+
+.table-row.drag-over-above:hover,
+.table-row.drag-over-below:hover {
+  background: var(--color-accent-soft);
+}
+
+.table-row.drag-over-above {
+  box-shadow: inset 0 2px 0 var(--color-accent);
+}
+
+.table-row.drag-over-below {
+  box-shadow: inset 0 -2px 0 var(--color-accent);
 }
 
 /* ============================================================

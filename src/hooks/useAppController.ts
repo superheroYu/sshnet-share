@@ -452,6 +452,11 @@ export function useAppController() {
   const isRightPanelOpen = canShowEditor || canShowConnectionDetails;
   const hasVisibleSelection = visibleSelectedProfiles.length > 0;
   const hasSingleVisibleSelection = visibleSelectedProfiles.length === 1;
+  // Reordering rearranges the stored profile array, so it is only allowed when the
+  // visible list matches that array 1:1 — i.e. the full Profiles view with no search
+  // filter and no unsaved edits in flight.
+  const canReorderProfiles =
+    activeSection === "profiles" && !searchQuery.trim() && !isDirty && !isBusy && !isSaving;
 
   useEffect(() => {
     if (selectedProfile && selectedProfile.id !== draftProfile.id && !isDirty) {
@@ -745,6 +750,53 @@ export function useAppController() {
     } finally {
       setIsSaving(false);
     }
+  }
+
+  async function persistReorderedProfiles(nextProfiles: Profile[]) {
+    const previousProfiles = profiles;
+    setProfiles(nextProfiles);
+    try {
+      const saved = await invoke<Profile[]>("save_profiles", { profiles: nextProfiles });
+      setProfiles(saved);
+    } catch (error) {
+      setProfiles(previousProfiles);
+      appendLog("ERROR", text.messages.saveProfilesFailed(displayError(error, text)));
+    }
+  }
+
+  function reorderProfiles(sourceId: string, targetId: string) {
+    if (!canReorderProfiles || sourceId === targetId) {
+      return;
+    }
+    const fromIndex = profiles.findIndex((profile) => profile.id === sourceId);
+    const toIndex = profiles.findIndex((profile) => profile.id === targetId);
+    if (fromIndex < 0 || toIndex < 0) {
+      return;
+    }
+    const nextProfiles = [...profiles];
+    const [moved] = nextProfiles.splice(fromIndex, 1);
+    nextProfiles.splice(toIndex, 0, moved);
+    void persistReorderedProfiles(nextProfiles);
+  }
+
+  function moveProfile(profileId: string, direction: -1 | 1) {
+    if (!canReorderProfiles) {
+      return;
+    }
+    const index = profiles.findIndex((profile) => profile.id === profileId);
+    if (index < 0) {
+      return;
+    }
+    const targetIndex = index + direction;
+    if (targetIndex < 0 || targetIndex >= profiles.length) {
+      return;
+    }
+    const nextProfiles = [...profiles];
+    [nextProfiles[index], nextProfiles[targetIndex]] = [
+      nextProfiles[targetIndex],
+      nextProfiles[index],
+    ];
+    void persistReorderedProfiles(nextProfiles);
   }
 
   async function saveDraft() {
@@ -1187,13 +1239,14 @@ export function useAppController() {
     invalidSelectedProfileNames, runningCount, serverCommand, sshPreview, hostKeyScanMatchesDraft,
     pendingHostKeyReplace, pendingDiscardChange,
     isWorkspaceSection, showInlineLogs, canShowEditor, canShowConnectionDetails, isRightPanelOpen,
-    hasVisibleSelection, hasSingleVisibleSelection,
+    hasVisibleSelection, hasSingleVisibleSelection, canReorderProfiles,
     setEditorTab, setIsEditorOpen, setSearchQuery, setRuntimeLogMode, setLogProfileFilter,
     setLogFromDateTime, setLogToDateTime,
     setPasswordValue, appendLog, changeSection, toggleStartOnBoot, updateAppSetting,
     updateDefaultProfileSetting, updateDefaultNumberSetting, updateDefaultNoProxy, createNewProfile,
     startProfiles, stopProfiles, editSelectedProfile, copyProfile, deleteSelectedProfiles,
     toggleSelectAll, toggleSelected, selectProfile, selectConnection, clearSelectedConnection,
+    reorderProfiles, moveProfile,
     openProfileEditor, viewProfileLogs, statusClass, exportLogs, previewLogs, setLogPreview,
     openLastLogExportFolder, exportDiagnosticBundle, openLastDiagnosticBundleFolder,
     checkForUpdates, installAvailableUpdate,
