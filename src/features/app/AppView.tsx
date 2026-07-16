@@ -106,6 +106,7 @@ export function AppView({ controller }: { controller: AppController }) {
     isRightPanelOpen,
     hasVisibleSelection,
     hasSingleVisibleSelection,
+    canReorderProfiles,
     setEditorTab,
     setIsEditorOpen,
     setSearchQuery,
@@ -132,6 +133,8 @@ export function AppView({ controller }: { controller: AppController }) {
     selectProfile,
     selectConnection,
     clearSelectedConnection,
+    reorderProfiles,
+    moveProfile,
     openProfileEditor,
     viewProfileLogs,
     statusClass,
@@ -624,6 +627,9 @@ export function AppView({ controller }: { controller: AppController }) {
               hasSingleVisibleSelection={hasSingleVisibleSelection}
               invalidSelectedProfileNames={invalidSelectedProfileNames}
               isConnectionsView={activeSection === "connections"}
+              canReorder={canReorderProfiles}
+              reorderProfiles={reorderProfiles}
+              moveProfile={moveProfile}
               createNewProfile={createNewProfile}
               startProfiles={startProfiles}
               stopProfiles={stopProfiles}

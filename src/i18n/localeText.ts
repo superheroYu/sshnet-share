@@ -149,6 +149,10 @@ export const localeText = {
       noActiveConnectionsTitle: "暂无活动连接",
       noActiveConnectionsHint: "启动一个配置后，运行中的 SSH 反向隧道会显示在这里。",
       openProfiles: "前往配置列表",
+      reorderHandle: "拖动排序（聚焦后也可用 ↑ / ↓ 键调整）",
+      reorderHint: "搜索或查看活动连接时无法调整顺序，请先返回完整配置列表。",
+      moveUp: "上移",
+      moveDown: "下移",
     },
     connectionDetails: {
       title: "连接详情",
@@ -530,6 +534,10 @@ export const localeText = {
       noActiveConnectionsTitle: "No active connections",
       noActiveConnectionsHint: "Running SSH reverse tunnels will appear here after you start a profile.",
       openProfiles: "Open Profiles",
+      reorderHandle: "Drag to reorder (or focus and use ↑ / ↓)",
+      reorderHint: "Reordering is unavailable while searching or viewing active connections. Return to the full profile list first.",
+      moveUp: "Move up",
+      moveDown: "Move down",
     },
     connectionDetails: {
       title: "Connection Details",
